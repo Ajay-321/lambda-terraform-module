@@ -8,9 +8,10 @@ on:
         default: 'false'
   push:
     paths:
-      - '.github/workflows/aws_terraform_dev_us_east1.yml'
+      - '.github/workflows/test.yml'
       - 'dev/us-east-1/**'
       - 'modules/**'
+      - 'lambda/**'
 
       
 permissions:
@@ -18,7 +19,7 @@ permissions:
 
 jobs:
   Terraform:
-    runs-on: 'ec2-runner'
+    runs-on: [self-hosted, self-hosted-runner]
 
     defaults:
       run:
@@ -27,13 +28,6 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-
-      - name: Setup GitHub user token
-        run: |
-          echo machine github.com login renovate_token password $GITHUB_TOKEN > $HOME/.secrets
-          chmod 600 $HOME/.secrets
-        env:
-          GITHUB_TOKEN: ${{secrets.RENOVATE_TOKEN}}
 
       - name: Install Terraform
         run: |
@@ -55,12 +49,9 @@ jobs:
         run: cd dev/us-east-1 && terraform plan -input=false
 
       - name: Terraform Apply
-        if: ((github.ref == 'refs/heads/develop' && github.event_name == 'push')||(github.ref == 'refs/heads/develop' && github.event_name == 'workflow_dispatch' && github.event.inputs.tf_apply == 'true'))
+        if: ((github.ref == 'refs/heads/main' && github.event_name == 'push')||(github.ref == 'refs/heads/main' && github.event_name == 'workflow_dispatch' && github.event.inputs.tf_apply == 'true'))
         run: cd dev/us-east-1 && terraform apply -auto-approve -input=false
 
-      - name: Cleanup GitHub user token
-        if: always()
-        run: |
-          rm $HOME/.secrets
+  
           
 
