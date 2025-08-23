@@ -1,0 +1,66 @@
+name: test
+
+on:
+  workflow_dispatch:
+    inputs:
+      tf_apply:
+        description: run terraform apply
+        default: 'false'
+  push:
+    paths:
+      - '.github/workflows/aws_terraform_dev_us_east1.yml'
+      - 'dev/us-east-1/**'
+      - 'modules/**'
+
+      
+permissions:
+  contents: read
+
+jobs:
+  Terraform:
+    runs-on: 'ec2-runner'
+
+    defaults:
+      run:
+        shell: bash
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup GitHub user token
+        run: |
+          echo machine github.com login renovate_token password $GITHUB_TOKEN > $HOME/.secrets
+          chmod 600 $HOME/.secrets
+        env:
+          GITHUB_TOKEN: ${{secrets.RENOVATE_TOKEN}}
+
+      - name: Install Terraform
+        run: |
+          terraform_version=1.11.2
+          wget https://releases.hashicorp.com/terraform/$terraform_version/terraform_${terraform_version}_linux_amd64.zip
+          unzip terraform_${terraform_version}_linux_amd64.zip
+          chmod +x terraform
+          sudo mv terraform /usr/local/bin
+
+      - name: Terraform Format
+        run: terraform fmt -recursive -check -diff -write=false .
+
+      - name: Terraform Init
+        run: |
+          ./versions_update.sh dev/us-east-1/versions.env modules
+          cd dev/us-east-1 && terraform init
+
+      - name: Terraform Plan
+        run: cd dev/us-east-1 && terraform plan -input=false
+
+      - name: Terraform Apply
+        if: ((github.ref == 'refs/heads/develop' && github.event_name == 'push')||(github.ref == 'refs/heads/develop' && github.event_name == 'workflow_dispatch' && github.event.inputs.tf_apply == 'true'))
+        run: cd dev/us-east-1 && terraform apply -auto-approve -input=false
+
+      - name: Cleanup GitHub user token
+        if: always()
+        run: |
+          rm $HOME/.secrets
+          
+

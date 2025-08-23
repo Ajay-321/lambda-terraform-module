@@ -1,0 +1,71 @@
+name: Deploy Lambda & Serverless Pipeline
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    env:
+      TF_WORKING_DIR: terraform
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      # Configure AWS credentials via OIDC / IAM role
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::123456789012:role/GitHubActionsDeployRole
+          aws-region: us-east-1
+
+      # Install Terraform
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v2
+
+      # Build Lambda layer zip dynamically
+      - name: Build Lambda Layer
+        run: |
+          cd lambda/lambda_layer
+          zip -r psycopg2_layer.zip psycopg2/
+          zip -r gcp_layer.zip gcp/
+          cd ../../
+
+      # Upload Lambda layer to S3 bucket
+      - name: Upload Lambda Layer to S3
+        run: |
+          aws s3 cp lambda/lambda_layer/psycopg2_layer.zip s3://your-lambda-bucket/layers/psycopg2_layer.zip
+          aws s3 cp lambda/lambda_layer/gcp_layer.zip s3://your-lambda-bucket/layers/gcp_layer.zip
+
+      # Capture the uploaded layer ARNs
+      - name: Get Lambda Layer ARNs
+        id: layers
+        run: |
+          PSY_LAYERS=$(aws lambda list-layer-versions --layer-name psycopg2_layers --query 'LayerVersions[0].LayerVersionArn' --output text || echo "")
+          GCP_LAYERS=$(aws lambda list-layer-versions --layer-name gcp_layer --query 'LayerVersions[0].LayerVersionArn' --output text || echo "")
+          echo "::set-output name=psy_layer::$PSY_LAYERS"
+          echo "::set-output name=gcp_layer::$GCP_LAYERS"
+
+      # Terraform init
+      - name: Terraform Init
+        working-directory: ${{ env.TF_WORKING_DIR }}
+        run: terraform init -input=false
+
+      # Terraform plan
+      - name: Terraform Plan
+        working-directory: ${{ env.TF_WORKING_DIR }}
+        run: |
+          terraform plan \
+            -var "lambda_layers={psy=$PSY_LAYERS,gcp=$GCP_LAYERS}" \
+            -input=false
+
+      # Terraform apply
+      - name: Terraform Apply
+        working-directory: ${{ env.TF_WORKING_DIR }}
+        run: |
+          terraform apply -auto-approve \
+            -var "lambda_layers={psy=$PSY_LAYERS,gcp=$GCP_LAYERS}" \
+            -input=false
