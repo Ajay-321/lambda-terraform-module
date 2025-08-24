@@ -33,6 +33,10 @@ jobs:
         uses: hashicorp/setup-terraform@v1
         with:
           terraform_version: 1.12
+      - name: Install Node.js
+        run: |
+          sudo apt-get update -y
+          sudo apt-get install -y nodejs npm    
 
       - name: Terraform Format
         run: terraform fmt -recursive -check -diff -write=false .
