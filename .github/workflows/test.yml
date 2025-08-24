@@ -29,19 +29,11 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Install prerequisites
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y unzip wget
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v1
+        with:
+          terraform_version: 1.12
 
-      - name: Install Terraform
-        run: |
-          terraform_version=1.11.2
-          wget https://releases.hashicorp.com/terraform/$terraform_version/terraform_${terraform_version}_linux_amd64.zip
-          unzip terraform_${terraform_version}_linux_amd64.zip
-          chmod +x terraform
-          sudo mv terraform /usr/local/bin
-    
       - name: Terraform Format
         run: terraform fmt -recursive -check -diff -write=false .
 
