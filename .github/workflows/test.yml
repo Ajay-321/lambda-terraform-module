@@ -36,7 +36,7 @@ jobs:
           unzip terraform_${terraform_version}_linux_amd64.zip
           chmod +x terraform
           sudo mv terraform /usr/local/bin
-
+      # terraform format
       - name: Terraform Format
         run: terraform fmt -recursive -check -diff -write=false .
 
