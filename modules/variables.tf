@@ -8,7 +8,7 @@ variable "lambda_function" {
   type = any
 }
 variable "sns_topic" {
-    type = any
+  type = any
 }
 variable "event_bridge" {
   type = any

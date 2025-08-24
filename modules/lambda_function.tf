@@ -9,9 +9,9 @@ locals {
 # Lambda Function Creation
 # ------------------------------
 module "lambda_function" {
-  for_each      = var.lambda_function
-  depends_on    = [aws_s3_object.lambda_zip_objects, module.lambda_layer_s3]
-  source        = "github.com/terraform-aws-modules/terraform-aws-lambda?ref=v8.0.1"
+  for_each   = var.lambda_function
+  depends_on = [aws_s3_object.lambda_zip_objects, module.lambda_layer_s3]
+  source     = "github.com/terraform-aws-modules/terraform-aws-lambda?ref=v8.0.1"
 
   function_name = each.value.function_name
   create        = each.value.create
@@ -22,7 +22,7 @@ module "lambda_function" {
   timeout       = each.value.timeout
 
   # Attach the common layer dynamically
-  
+
   layers = [
     module.lambda_layer_s3.lambda_layer_arn,
   ]
