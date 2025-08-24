@@ -47,7 +47,6 @@ jobs:
 
       - name: Terraform Init
         run: |
-          ./versions_update.sh dev/us-east-1/versions.env modules
           cd dev/us-east-1 && terraform init
 
       - name: Terraform Plan
