@@ -22,8 +22,7 @@ module "lambda_function" {
   timeout       = each.value.timeout
 
   # Attach the common layer dynamically 
-  layers = (length(aws_lambda_layer_version.common_layer) > 0 ? [aws_lambda_layer_version.common_layer[0].arn] : null)
-
+  layers = [aws_lambda_layer_version.common_layer.arn]
 
 
   create_package = false
