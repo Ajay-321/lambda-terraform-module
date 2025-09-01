@@ -50,9 +50,20 @@ jobs:
       - name: Verify layer.zip
         run: |
           if [ ! -f "lambda/lambda_layer/layer.zip" ]; then
-            echo "Error: layer.zip not found!"
+            echo "layer.zip not found!"
+            ls -R lambda/lambda_layer
             exit 1
-          fi    
+          else
+            echo "layer.zip created successfully."
+            ls -lh lambda/lambda_layer/layer.zip
+          fi
+          
+       # 6. Upload layer.zip as an artifact (optional for debugging)
+      - name: Upload layer artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: lambda-layer-zip
+          path: lambda/lambda_layer/layer.zip    
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v1
