@@ -46,6 +46,14 @@ jobs:
           chmod +x ./build_layer.sh
           ./build_layer.sh  
 
+      # Verify layer.zip exists
+      - name: Verify layer.zip
+        run: |
+          if [ ! -f "lambda/lambda_layer/layer.zip" ]; then
+            echo "Error: layer.zip not found!"
+            exit 1
+          fi    
+
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v1
         with:
