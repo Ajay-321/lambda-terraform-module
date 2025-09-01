@@ -57,13 +57,13 @@ jobs:
             echo "layer.zip created successfully."
             ls -lh lambda/lambda_layer/layer.zip
           fi
-          
-       # 6. Upload layer.zip as an artifact (optional for debugging)
+
+      # 6. Upload layer.zip as an artifact (optional for debugging)
       - name: Upload layer artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: lambda-layer-zip
-          path: lambda/lambda_layer/layer.zip    
+          path: lambda/lambda_layer/layer.zip   
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v1
