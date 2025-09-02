@@ -5,12 +5,32 @@ locals {
   account_id             = data.aws_caller_identity.current.account_id
 }
 
+# Ensure S3 object exists for the layer (created via GitHub Actions upload)
+resource "aws_s3_object" "lambda_layer_zip" {
+  bucket = module.lambda_bucket.s3_bucket_id
+  key    = lambda/lambda_layer
+}
+
+# Lambda Layer Version
+resource "aws_lambda_layer_version" "common_layer" {
+  layer_name          = "common_dependencies"
+  description         = "Pandas and Numpy dependencies"
+  s3_bucket           = module.lambda_bucket.s3_bucket_id
+  s3_key              = lambda/lambda_layer
+  compatible_runtimes = ["python3.12"]
+
+  # Force update when the uploaded object changes
+  source_code_hash = aws_s3_object.lambda_layer_zip.etag
+
+  depends_on = [aws_s3_object.lambda_layer_zip]
+}
+
 # ------------------------------
 # Lambda Function Creation
 # ------------------------------
 module "lambda_function" {
   for_each   = var.lambda_function
-  depends_on = [aws_s3_object.lambda_zip_objects, aws_lambda_layer_version.common_layer]
+  depends_on = [aws_s3_object.lambda_zip_objects]
   source     = "github.com/terraform-aws-modules/terraform-aws-lambda?ref=v8.0.1"
 
   function_name = each.value.function_name
