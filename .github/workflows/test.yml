@@ -67,7 +67,7 @@ jobs:
       # Upload layer.zip to S3
       - name: Upload Lambda Layer to S3
         run: |
-          BUCKET_NAME="${{ secrets.ENVIRONMENT }}-${{ secrets.AWS_REGION }}-lambda-bucket"
+          BUCKET_NAME="dev-test-bucket-43"
           LAYER_KEY="lambda/lambda_layer/layer.zip"
 
           echo "Uploading Lambda Layer ZIP to s3://$BUCKET_NAME/$LAYER_KEY ..."
