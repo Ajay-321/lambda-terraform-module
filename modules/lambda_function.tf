@@ -8,7 +8,7 @@ locals {
 # Ensure S3 object exists for the layer (created via GitHub Actions upload)
 resource "aws_s3_object" "lambda_layer_zip" {
   bucket = module.lambda_bucket.s3_bucket_id
-  key    = lambda / lambda_layer
+  key    = "lambda/lambda_layer"
 }
 
 # Lambda Layer Version
@@ -16,7 +16,7 @@ resource "aws_lambda_layer_version" "common_layer" {
   layer_name          = "common_dependencies"
   description         = "Pandas and Numpy dependencies"
   s3_bucket           = module.lambda_bucket.s3_bucket_id
-  s3_key              = lambda / lambda_layer
+  s3_key              = "lambda/lambda_layer"
   compatible_runtimes = ["python3.12"]
 
   # Force update when the uploaded object changes
