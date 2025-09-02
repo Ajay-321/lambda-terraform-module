@@ -33,6 +33,12 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
+      
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::214408080534:role/ec2-ssm-role
+          aws-region: us-east-1    
 
        # Clean old zips
       - name: Clean old ZIP files
@@ -58,12 +64,17 @@ jobs:
             ls -lh lambda/lambda_layer/layer.zip
           fi
 
-      # 6. Upload layer.zip as an artifact (optional for debugging)
-      - name: Upload layer artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: lambda-layer-zip
-          path: lambda/lambda_layer/layer.zip   
+      # Upload layer.zip to S3
+      - name: Upload Lambda Layer to S3
+        run: |
+          BUCKET_NAME="${{ secrets.ENVIRONMENT }}-${{ secrets.AWS_REGION }}-lambda-bucket"
+          LAYER_KEY="lambda/lambda_layer/layer.zip"
+
+          echo "Uploading Lambda Layer ZIP to s3://$BUCKET_NAME/$LAYER_KEY ..."
+          aws s3 cp lambda/lambda_layer/layer.zip s3://$BUCKET_NAME/$LAYER_KEY
+
+          # Export the key for Terraform
+          echo "LAYER_KEY=$LAYER_KEY" >> $GITHUB_ENV
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v1
@@ -78,11 +89,11 @@ jobs:
           cd dev/us-east-1 && terraform init
 
       - name: Terraform Plan
-        run: cd dev/us-east-1 && terraform plan -input=false
+        run: cd dev/us-east-1 && terraform plan -input=false -var="lambda_layer_s3_key=${{ env.LAYER_KEY }}"
       # tf apply
       - name: Terraform Apply
         if: ((github.ref == 'refs/heads/main' && github.event_name == 'push')||(github.ref == 'refs/heads/main' && github.event_name == 'workflow_dispatch' && github.event.inputs.tf_apply == 'true'))
-        run: cd dev/us-east-1 && terraform apply -auto-approve -input=false
+        run: cd dev/us-east-1 && terraform apply -auto-approve -input=false -var="lambda_layer_s3_key=${{ env.LAYER_KEY }}"
 
   
           
