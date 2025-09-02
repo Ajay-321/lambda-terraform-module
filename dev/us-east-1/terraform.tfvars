@@ -93,7 +93,7 @@ lambda_bucket = {
         }
         Action = "s3:*"
         Resource = [
-          "arn:aws:s3:::dev-us-east-1-lambda-bucket"
+          "arn:aws:s3:::dev-us-east-1-lambda-bucket-new"
         ]
       }
     ]
