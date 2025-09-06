@@ -28,8 +28,8 @@ module "lambda_bucket" {
 
 data "archive_file" "lambda_zip" {
   type        = "zip"
-  source_dir  = "${path.root}/lambda/lambda_code/"
-  output_path = "${path.root}/lambda/lambda_code_${timestamp()}.zip"
+  source_dir  = "${path.root}/../../lambda/lambda_code/"
+  output_path = "${path.root}/../../lambda/lambda_code_${timestamp()}.zip"
 }
 
 resource "aws_s3_object" "lambda_zip_objects" {
@@ -37,7 +37,7 @@ resource "aws_s3_object" "lambda_zip_objects" {
   bucket = module.lambda_bucket.s3_bucket_id
   key    = "lambda/${basename(data.archive_file.lambda_zip.output_path)}"
   source = data.archive_file.lambda_zip.output_path
-  etag   = filemd5("${path.root}/lambda/${basename(data.archive_file.lambda_zip.output_path)}")
+  etag   = filemd5("${path.root}/../../lambda/${basename(data.archive_file.lambda_zip.output_path)}")
 }
 
 # # Create a ZIP archive reference
