@@ -8,7 +8,7 @@ locals {
 # Ensure S3 object exists for the layer (created via GitHub Actions upload)
 # Ensure S3 object exists for the layer (created via GitHub Actions upload)
 resource "aws_s3_object" "lambda_layer_zip" {
-  bucket = module.lambda_bucket.s3_bucket_id
+  bucket = "dev-test-bucket-43"
   key    = "lambda/lambda_layer/layer.zip"
 }
 
@@ -16,7 +16,7 @@ resource "aws_s3_object" "lambda_layer_zip" {
 resource "aws_lambda_layer_version" "common_layer" {
   layer_name          = "common_dependencies"
   description         = "Pandas and Numpy dependencies"
-  s3_bucket           = module.lambda_bucket.s3_bucket_id
+  s3_bucket           = "dev-test-bucket-43"
   s3_key              = "lambda/lambda_layer/layer.zip"
   compatible_runtimes = ["python3.12"]
 
