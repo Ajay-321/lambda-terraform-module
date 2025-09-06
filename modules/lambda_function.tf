@@ -6,7 +6,6 @@ locals {
 }
 
 # Ensure S3 object exists for the layer (created via GitHub Actions upload)
-# Ensure S3 object exists for the layer (created via GitHub Actions upload)
 resource "aws_s3_object" "lambda_layer_zip" {
   bucket = "dev-test-bucket-43"
   key    = "lambda/lambda_layer/layer.zip"
@@ -21,7 +20,7 @@ resource "aws_lambda_layer_version" "common_layer" {
   compatible_runtimes = ["python3.12"]
 
   # Force update when the uploaded object changes
-  source_code_hash = aws_s3_object.lambda_layer_zip.etag
+  #source_code_hash = aws_s3_object.lambda_layer_zip.etag
 
   depends_on = [aws_s3_object.lambda_layer_zip]
 }
