@@ -70,8 +70,8 @@ jobs:
           BUCKET_NAME="dev-test-bucket-43"
           LAYER_KEY="lambda/lambda_layer/layer.zip"
 
-          echo "Uploading Lambda Layer ZIP to s3://$BUCKET_NAME/lambda/lambda_layer ..."
-          aws s3 cp lambda/lambda_layer/layer.zip s3://$BUCKET_NAME/lambda/lambda_layer
+          echo "Uploading Lambda Layer ZIP to s3://$BUCKET_NAME/$LAYER_KEY ..."
+          aws s3 cp lambda/lambda_layer/layer.zip s3://$BUCKET_NAME/$LAYER_KEY
 
 
       - name: Setup Terraform
