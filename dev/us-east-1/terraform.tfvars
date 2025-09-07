@@ -21,22 +21,10 @@ lambda_function = {
     memory_size   = 256
     timeout       = 900
     lambda_config = {
-      cluster_name                        = "dev"
-      auth_method                         = "WIF"
-      credential_file_path                = "workload_identity_config.json"
-      dynamodb_log_table_name             = "dev-us-east-1-dynamo-table"
-      dynamo_partition_key                = "file_path"
-      dynamo_sort_key                     = "query_id"
-      google_cloud_project                = "dev-test-project"
-      pubsub_subscription_list            = "dev-topic-subscription"
-      rds_dbname                          = "test_db"
-      rds_user                            = "test"
-      rds_password                        = "test@123"
-      rds_host                            = "dev-testdb.cluster-cd897v.us-east-1.rds.amazonaws.com"
-      region                              = "us-east-1"
-      sns_topic_arn                       = "arn:aws:sns:us-east-1:214408080534:dev-us-east-1-snstopic"
-      num_of_pubsub_message_to_process    = 75
-      pubsub_read_message_timeout_seconds = 30
+      credential_file_path = "workload_identity_config.json"
+      google_cloud_project = "dev-test-project"
+      gcs_bucket_name      = "dev-wif-demo-bucket"
+
     }
   },
   devint = {
@@ -49,22 +37,11 @@ lambda_function = {
     memory_size   = 256
     timeout       = 900
     lambda_config = {
-      cluster_name                        = "dev"
-      auth_method                         = "WIF"
-      credential_file_path                = "workload_identity_config.json"
-      dynamodb_log_table_name             = "dev-us-east-1-dynamo-table"
-      dynamo_partition_key                = "file_path"
-      dynamo_sort_key                     = "query_id"
-      google_cloud_project                = "dev-test-project"
-      pubsub_subscription_list            = "dev-topic-subscription"
-      rds_dbname                          = "test_db"
-      rds_user                            = "test"
-      rds_password                        = "test@123"
-      rds_host                            = "dev-testdb.cluster-cd897v.us-east-1.rds.amazonaws.com"
-      region                              = "us-east-1"
-      sns_topic_arn                       = "arn:aws:sns:us-east-1:214408080534:dev-us-east-1-snstopic"
-      num_of_pubsub_message_to_process    = 75
-      pubsub_read_message_timeout_seconds = 30
+      cluster_name         = "dev"
+      auth_method          = "WIF"
+      credential_file_path = "workload_identity_config.json"
+      google_cloud_project = "dev-test-project"
+      gcs_bucket_name      = "dev-wif-demo-bucket"
     }
   }
 }
@@ -130,4 +107,5 @@ event_bridge = {
 }
 
 
-layer_name = "pandas_numpy_layer"
+layer_name        = "gcp_lambda_layer"
+layer_bucket_name = "dev-test-bucket-43"

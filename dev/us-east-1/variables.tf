@@ -17,3 +17,6 @@ variable "event_bridge" {
 variable "layer_name" {
   type = any
 }
+variable "layer_bucket_name" {
+  type = string
+}

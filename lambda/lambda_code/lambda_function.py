@@ -1,40 +1,36 @@
-import boto3
 import os
-
-ec2 = boto3.client('ec2')
+import json
+from google.cloud import storage
 
 def lambda_handler(event, context):
-    # Get tag key and value from environment variables (or hardcode if needed)
-    tag_key = os.environ.get('TAG_KEY', 'Environment')
-    tag_value = os.environ.get('TAG_VALUE', 'Dev')
+    try:
+        # The storage.Client() will automatically pick up credentials
+        # from the GOOGLE_APPLICATION_CREDENTIALS environment variable
+        # and the project from GOOGLE_CLOUD_PROJECT.
+        client = storage.Client()
 
-    # Find instances with the given tag
-    filters = [
-        {
-            'Name': f'tag:{tag_key}',
-            'Values': [tag_value]
-        },
-        {
-            'Name': 'instance-state-name',
-            'Values': ['running']  # Only stop running instances
+        bucket_name = os.environ.get('gcs_bucket_name')
+        # Example: List objects in the bucket
+        blobs = client.list_blobs(bucket_name)
+        object_names = [blob.name for blob in blobs]
+
+        # Example: Download a specific object
+        # blob_name = "" # Replace with an actual object name
+        # bucket = client.bucket(bucket_name)
+        # blob = bucket.blob(blob_name)
+        # content = blob.download_as_text()
+
+        return {
+            "statusCode": 200,
+            "body": json.dumps({
+                "message": f"Successfully listed objects in bucket {bucket_name}",
+                "objects": object_names
+                # "downloaded_content": content # Uncomment if you want to download and return content
+            })
         }
-    ]
 
-    response = ec2.describe_instances(Filters=filters)
-
-    # Collect instance IDs
-    instance_ids = []
-    for reservation in response['Reservations']:
-        for instance in reservation['Instances']:
-            instance_ids.append(instance['InstanceId'])
-
-    if instance_ids:
-        print(f"Stopping instances: {instance_ids}")
-        ec2.stop_instances(InstanceIds=instance_ids)
-    else:
-        print("No running instances found with the specified tag.")
-
-    return {
-        'statusCode': 200,
-        'body': f"Processed instances: {instance_ids}"
-    }
+    except Exception as e:
+        return {
+            "statusCode": 500,
+            "body": f"Error: {str(e)}"
+        }
