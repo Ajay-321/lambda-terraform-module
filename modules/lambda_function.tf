@@ -7,15 +7,15 @@ locals {
 
 # Ensure S3 object exists for the layer (created via GitHub Actions upload)
 resource "aws_s3_object" "lambda_layer_zip" {
-  bucket = "dev-test-bucket-43"
+  bucket = var.layer_bucket_name
   key    = "lambda/lambda_layer/layer.zip"
 }
 
 # Lambda Layer Version
 resource "aws_lambda_layer_version" "common_layer" {
-  layer_name          = "common_dependencies"
-  description         = "Pandas and Numpy dependencies"
-  s3_bucket           = "dev-test-bucket-43"
+  layer_name          = var.layer_name
+  description         = "Lambda dependencies layer"
+  s3_bucket           = var.layer_bucket_name
   s3_key              = "lambda/lambda_layer/layer.zip"
   compatible_runtimes = ["python3.12"]
 
@@ -57,22 +57,9 @@ module "lambda_function" {
   vpc_security_group_ids = var.common_vars["vpc_security_group_id"]
 
   environment_variables = {
-    Environment                         = var.common_vars["common_tags"]["Environment"]
-    region                              = var.common_vars["region"]
-    auth_method                         = each.value.lambda_config.auth_method
-    GOOGLE_APPLICATION_CREDENTIALS      = each.value.lambda_config.credential_file_path
-    dynamo_partition_key                = each.value.lambda_config.dynamo_partition_key
-    dynamo_sort_key                     = each.value.lambda_config.dynamo_sort_key
-    dynamo_log_table_name               = each.value.lambda_config.dynamodb_log_table_name
-    GOOGLE_CLOUD_PROJECT                = each.value.lambda_config.google_cloud_project
-    rds_dbname                          = each.value.lambda_config.rds_dbname
-    rds_host                            = each.value.lambda_config.rds_host
-    rds_user                            = each.value.lambda_config.rds_user
-    rds_password                        = each.value.lambda_config.rds_password
-    pubsub_subscription_list            = each.value.lambda_config.pubsub_subscription_list
-    num_of_pubsub_message_to_process    = each.value.lambda_config.num_of_pubsub_message_to_process
-    pubsub_read_message_timeout_seconds = each.value.lambda_config.pubsub_read_message_timeout_seconds
-    sns_topic_arn                       = each.value.lambda_config.sns_topic_arn
+    GOOGLE_APPLICATION_CREDENTIALS = each.value.lambda_config.credential_file_path
+    GOOGLE_CLOUD_PROJECT           = each.value.lambda_config.google_cloud_project
+    GCS_BUCKET_NAME                = each.value.lambda_config.gcs_bucket_name
   }
 
   tags = var.common_vars["common_tags"]
