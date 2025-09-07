@@ -8,5 +8,4 @@ module "dev" {
   event_bridge      = var.event_bridge
   layer_name        = var.layer_name
   layer_bucket_name = var.layer_bucket_name
-
 }

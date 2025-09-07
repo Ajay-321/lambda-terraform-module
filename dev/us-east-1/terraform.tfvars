@@ -22,7 +22,7 @@ lambda_function = {
     timeout       = 900
     lambda_config = {
       credential_file_path = "workload_identity_config.json"
-      google_cloud_project = "dev-test-project"
+      google_cloud_project = "dev-wif-demo-project"
       gcs_bucket_name      = "dev-wif-demo-bucket"
 
     }
@@ -40,7 +40,7 @@ lambda_function = {
       cluster_name         = "dev"
       auth_method          = "WIF"
       credential_file_path = "workload_identity_config.json"
-      google_cloud_project = "dev-test-project"
+      google_cloud_project = "dev-wif-demo-project"
       gcs_bucket_name      = "dev-wif-demo-bucket"
     }
   }
