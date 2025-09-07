@@ -1,2 +1,3 @@
-pandas
-numpy
+google-cloud-pubsub
+google-cloud-storage
+google-auth
