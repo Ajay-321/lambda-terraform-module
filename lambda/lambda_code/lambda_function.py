@@ -9,7 +9,7 @@ def lambda_handler(event, context):
         # and the project from GOOGLE_CLOUD_PROJECT.
         client = storage.Client()
 
-        bucket_name = os.environ.get('gcs_bucket_name')
+        bucket_name = os.environ.get('GCS_BUCKET_NAME')
         # Example: List objects in the bucket
         blobs = client.list_blobs(bucket_name)
         object_names = [blob.name for blob in blobs]
