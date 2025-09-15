@@ -1,20 +1,20 @@
 common_vars = {
-  vpc_id                = "vpc-01e98e8ed0e9fd133"
-  vpc_security_group_id = ["sg-0c4ffdb536de63b0c"]
+  vpc_id                = "vpc-0df88a8112a62efd8"
+  vpc_security_group_id = ["sg-06cb4082bec56dd09"]
   region                = "us-east-1"
   common_tags = {
     Terraform   = "true"
     Environment = "dev"
     aws_region  = "us-east-1"
   }
-  subnet_ids = ["subnet-0338c7a813db0dd58", "subnet-09ef2eb9629361b94"]
+  subnet_ids = ["subnet-0f6c5cb3a64fe6a50", "subnet-0a1810a35106e97b7"]
 }
 
 lambda_function = {
   dev = {
     create        = true
     iam_role_name = "dev-lambda-function-role"
-    function_name = "dev-us-east-1-lambda"
+    function_name = "dev-us-east-1-wif-lambda"
     description   = "Dev Lambda function."
     handler       = "lambda_function.lambda_handler"
     runtime       = "python3.12"
@@ -30,7 +30,7 @@ lambda_function = {
   devint = {
     create        = true
     iam_role_name = "dev-lambda-function-role"
-    function_name = "devint-us-east-1-lambda"
+    function_name = "devint-us-east-1-wif-lambda"
     description   = "Devint Lambda function."
     handler       = "lambda_function.lambda_handler"
     runtime       = "python3.12"

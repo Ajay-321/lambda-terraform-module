@@ -8,7 +8,7 @@ rm -rf $LAYER_DIR/python
 mkdir -p $LAYER_DIR/python
 
 # Install dependencies into python folder
-pip install -r $LAYER_DIR/requirements.txt -t $LAYER_DIR/python
+pip3 install -r $LAYER_DIR/requirements.txt -t $LAYER_DIR/python
 
 # Zip everything inside the folder for layer packaging
 cd $LAYER_DIR
