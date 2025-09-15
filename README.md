@@ -12,7 +12,7 @@ Workload Identity Federation (WIF) allows AWS workloads (e.g., Lambda, EC2, EKS)
 ![Architecture Diagram](architecture-diagram/wif.jpg)
 
 
-## Workflow:
+- ## Workflow:
 
     - Lambda assumes an AWS IAM role.
 
@@ -33,14 +33,14 @@ Workload Identity Federation (WIF) allows AWS workloads (e.g., Lambda, EC2, EKS)
 ⚡ Simplified operations (no key rotation).
 
 
-# ✅ Key Takeaways
+* # ✅ Key Takeaways
 
-    Use Workload Identity Federation for secure cross-cloud authentication.
+    * Use Workload Identity Federation for secure cross-cloud authentication.
 
-    Always package GCP client libraries as a Lambda Layer.
+    * Always package GCP client libraries as a Lambda Layer.
 
-    Keep Lambda in a private subnet for enhanced security.
+    * Keep Lambda in a private subnet for enhanced security.
 
-    Manage access via IAM role bindings in GCP.
+    * Manage access via IAM role bindings in GCP.
 
 # 🔒 With this setup, your AWS Lambda can securely interact with Google Cloud resources (GCS, Pub/Sub) without static keys, leveraging modern identity federation.
