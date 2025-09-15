@@ -22,8 +22,8 @@ lambda_function = {
     timeout       = 900
     lambda_config = {
       credential_file_path = "workload_identity_config.json"
-      google_cloud_project = "dev1-wif-demo-project"
-      gcs_bucket_name      = "dev1-wif-demo-bucket"
+      google_cloud_project = "dev-wif-demo-project"
+      gcs_bucket_name      = "dev-wif-demo-bucket"
 
     }
   },
@@ -31,17 +31,15 @@ lambda_function = {
     create        = true
     iam_role_name = "dev-lambda-function-role"
     function_name = "dev2-us-east-1-wif-lambda"
-    description   = "Devint Lambda function."
+    description   = "Dev2 Lambda function."
     handler       = "lambda_function.lambda_handler"
     runtime       = "python3.12"
     memory_size   = 256
     timeout       = 900
     lambda_config = {
-      cluster_name         = "dev"
-      auth_method          = "WIF"
       credential_file_path = "workload_identity_config.json"
-      google_cloud_project = "dev1-wif-demo-project"
-      gcs_bucket_name      = "dev1-wif-demo-bucket"
+      google_cloud_project = "dev-wif-demo-project"
+      gcs_bucket_name      = "dev-wif-demo-bucket"
     }
   }
 }
