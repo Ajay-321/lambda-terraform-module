@@ -1,6 +1,6 @@
 ## Securely Access GCP Resources from AWS Lambda using Workload Identity Federation
 
-This guide explains how to configure an AWS Lambda function running in a private subnet to securely access Google Cloud Storage (GCS) and Google Pub/Sub resources using Workload Identity Federation (WIF).
+This guide explains how to configure an AWS Lambda function running in a private subnet to securely access Google Cloud Storage (GCS) using Workload Identity Federation (WIF).
 The solution ensures keyless authentication — no long-lived GCP service account keys are stored or managed.
 
 ## Overview
@@ -43,4 +43,4 @@ Workload Identity Federation (WIF) allows AWS workloads (e.g., Lambda, EC2, EKS)
 
     * Manage access via IAM role bindings in GCP.
 
-## With this setup, your AWS Lambda can securely interact with Google Cloud resources (GCS, Pub/Sub) without static keys, leveraging modern identity federation.
+## With this setup, your AWS Lambda can securely interact with Google Cloud resources (GCS, Pub/Sub etc) without static keys, leveraging modern identity federation.
