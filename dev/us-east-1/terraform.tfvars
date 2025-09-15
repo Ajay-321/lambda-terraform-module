@@ -108,4 +108,4 @@ event_bridge = {
 
 
 layer_name        = "gcp_lambda_layer"
-layer_bucket_name = "dev1-test-bucket-43"
+layer_bucket_name = "dev-test-bucket-43"
