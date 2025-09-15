@@ -11,10 +11,10 @@ common_vars = {
 }
 
 lambda_function = {
-  dev1 = {
+  dev = {
     create        = true
     iam_role_name = "dev-lambda-function-role"
-    function_name = "dev1-us-east-1-wif-lambda"
+    function_name = "dev-us-east-1-wif-lambda"
     description   = "Dev Lambda function."
     handler       = "lambda_function.lambda_handler"
     runtime       = "python3.12"
@@ -25,21 +25,6 @@ lambda_function = {
       google_cloud_project = "dev-wif-demo-project"
       gcs_bucket_name      = "dev-wif-demo-bucket"
 
-    }
-  },
-  dev2 = {
-    create        = true
-    iam_role_name = "dev-lambda-function-role"
-    function_name = "dev2-us-east-1-wif-lambda"
-    description   = "Dev2 Lambda function."
-    handler       = "lambda_function.lambda_handler"
-    runtime       = "python3.12"
-    memory_size   = 256
-    timeout       = 900
-    lambda_config = {
-      credential_file_path = "workload_identity_config.json"
-      google_cloud_project = "dev-wif-demo-project"
-      gcs_bucket_name      = "dev-wif-demo-bucket"
     }
   }
 }
@@ -76,25 +61,15 @@ lambda_bucket = {
 }
 
 sns_topic = {
-  name        = "dev1-us-east-1-snstopic"
+  name        = "dev-us-east-1-snstopic"
   description = "Notifications for Lambda function Failure"
   emails      = ["ajay10795@gmail.com"]
 }
 
 event_bridge = {
-  dev1 = {
+  dev = {
     create_event_bridge = true
-    rule_name           = "dev1-us-east-1-rule"
-    description         = "Triggers Lambda every 15 minutes"
-    schedule_expression = "cron(0/15 * * * ? *)"
-    state               = "DISABLED"
-    perm_statement_id   = "AllowExecutionFromEventBridge"
-    action              = "lambda:InvokeFunction"
-    principal           = "events.amazonaws.com"
-  },
-  dev2 = {
-    create_event_bridge = true
-    rule_name           = "dev2-us-east-1-rule"
+    rule_name           = "dev-us-east-1-rule"
     description         = "Triggers Lambda every 15 minutes"
     schedule_expression = "cron(0/15 * * * ? *)"
     state               = "DISABLED"
