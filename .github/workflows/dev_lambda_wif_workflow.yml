@@ -1,4 +1,4 @@
-name: test
+name: dev_lambda_wif_workflow
 
 on:
   workflow_dispatch:
@@ -8,12 +8,11 @@ on:
         default: 'false'
   push:
     paths:
-      - '.github/workflows/test.yml'
+      - '.github/workflows/dev_lambda_wif_workflow.yml'
       - 'dev/us-east-1/**'
       - 'modules/**'
       - 'lambda/**'
 
-      
 permissions:
   contents: read
 
@@ -29,7 +28,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-       # Python setup for runner
+      # Python setup for runner
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
@@ -37,10 +36,10 @@ jobs:
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
-          role-to-assume: arn:aws:iam::214408080534:role/ec2-ssm-role
+          role-to-assume: ${{ secrets.ASSUME_ROLE_ARN }}
           aws-region: us-east-1    
 
-       # Clean old zips
+      # Clean old zips
       - name: Clean old ZIP files
         run: |
           echo "Removing old ZIP files from previous runs..."
@@ -67,12 +66,11 @@ jobs:
       # Upload layer.zip to S3
       - name: Upload Lambda Layer to S3
         run: |
-          BUCKET_NAME="dev-test-bucket-43"
+          BUCKET_NAME="${{ secrets.LAMBDA_BUCKET_NAME }}"
           LAYER_KEY="lambda/lambda_layer/layer.zip"
 
           echo "Uploading Lambda Layer ZIP to s3://$BUCKET_NAME/$LAYER_KEY ..."
           aws s3 cp lambda/lambda_layer/layer.zip s3://$BUCKET_NAME/$LAYER_KEY
-
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v1
@@ -88,11 +86,7 @@ jobs:
 
       - name: Terraform Plan
         run: cd dev/us-east-1 && terraform plan -input=false 
-      # tf apply
+
       - name: Terraform Apply
         if: ((github.ref == 'refs/heads/main' && github.event_name == 'push')||(github.ref == 'refs/heads/main' && github.event_name == 'workflow_dispatch' && github.event.inputs.tf_apply == 'true'))
         run: cd dev/us-east-1 && terraform apply -auto-approve -input=false
-
-  
-          
-
