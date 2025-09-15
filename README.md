@@ -3,26 +3,26 @@
 This guide explains how to configure an AWS Lambda function running in a private subnet to securely access Google Cloud Storage (GCS) and Google Pub/Sub resources using Workload Identity Federation (WIF).
 The solution ensures keyless authentication — no long-lived GCP service account keys are stored or managed.
 
-## 🚀 Overview
+## Overview
 
 Workload Identity Federation (WIF) allows AWS workloads (e.g., Lambda, EC2, EKS) to exchange their native AWS identity for short-lived Google Cloud credentials via the Google Security Token Service.
 
-## 🏗️ Architecture
+## Authentication Workflow
 
-![Architecture Diagram](architecture-diagram/wif.jpg)
+![Authentication Workflow](architecture-diagram/wif.jpg)
 
 
-- ## Workflow:
+* ## Workflow:
 
-    - Lambda assumes an AWS IAM role.
+    * Lambda assumes an AWS IAM role.
 
-    - AWS STS issues a token for that role.
+    * AWS STS issues a token for that role.
 
-    - Google STS validates the AWS token via WIF provider.
+    * Google STS validates the AWS token via WIF provider.
 
-    - A short-lived GCP access token is issued.
+    * A short-lived GCP access token is issued.
 
-    - Lambda uses this token to access GCS buckets and Pub/Sub topics.
+    * Lambda uses this token to access GCS buckets and Pub/Sub topics.
 
 ## Benefits:
 
@@ -33,7 +33,7 @@ Workload Identity Federation (WIF) allows AWS workloads (e.g., Lambda, EC2, EKS)
 ⚡ Simplified operations (no key rotation).
 
 
-* # ✅ Key Takeaways
+* ## Key Takeaways
 
     * Use Workload Identity Federation for secure cross-cloud authentication.
 
@@ -43,4 +43,4 @@ Workload Identity Federation (WIF) allows AWS workloads (e.g., Lambda, EC2, EKS)
 
     * Manage access via IAM role bindings in GCP.
 
-# 🔒 With this setup, your AWS Lambda can securely interact with Google Cloud resources (GCS, Pub/Sub) without static keys, leveraging modern identity federation.
+## With this setup, your AWS Lambda can securely interact with Google Cloud resources (GCS, Pub/Sub) without static keys, leveraging modern identity federation.
