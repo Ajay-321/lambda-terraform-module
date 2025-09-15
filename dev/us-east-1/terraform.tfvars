@@ -13,7 +13,7 @@ common_vars = {
 lambda_function = {
   dev1 = {
     create        = true
-    iam_role_name = "dev1-lambda-function-role"
+    iam_role_name = "dev-lambda-function-role"
     function_name = "dev1-us-east-1-wif-lambda"
     description   = "Dev Lambda function."
     handler       = "lambda_function.lambda_handler"
@@ -29,7 +29,7 @@ lambda_function = {
   },
   dev2 = {
     create        = true
-    iam_role_name = "dev1-lambda-function-role"
+    iam_role_name = "dev-lambda-function-role"
     function_name = "dev2-us-east-1-wif-lambda"
     description   = "Devint Lambda function."
     handler       = "lambda_function.lambda_handler"
