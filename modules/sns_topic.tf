@@ -2,7 +2,7 @@
 resource "aws_sns_topic" "sns_topic" {
   name         = var.sns_topic["name"]
   display_name = var.sns_topic["description"]
-  tags         = var.common_vars["common_tags"]
+  tags         = var.common_tags
 }
 
 # Create Email Subscriptions (multiple subscribers per topic)

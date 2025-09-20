@@ -6,7 +6,7 @@ resource "aws_cloudwatch_event_rule" "lambda_schedule_rule" {
   description         = each.value.description
   schedule_expression = each.value.schedule_expression
   state               = each.value.state
-  tags                = var.common_vars.common_tags
+  tags                = var.common_tags
 }
 
 # Event Target for Lambda

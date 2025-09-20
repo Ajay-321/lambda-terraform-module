@@ -1,3 +1,6 @@
+locals {
+  bucket_name = "${var.common_tags["Environment"]}-${var.common_tags["region"]}-lambda-bucket-new2"
+}
 
 resource "aws_s3_bucket_policy" "lambda_bucket_policy" {
   count  = var.lambda_bucket["create"] ? 1 : 0
@@ -8,8 +11,8 @@ resource "aws_s3_bucket_policy" "lambda_bucket_policy" {
 module "lambda_bucket" {
   source        = "github.com/terraform-aws-modules/terraform-aws-s3-bucket.git?ref=v5.5.0"
   create_bucket = var.lambda_bucket["create"]
-  bucket        = "${var.common_vars["common_tags"]["Environment"]}-${var.common_vars["region"]}-lambda-bucket-new2" #globally unique name
-  tags          = var.common_vars.common_tags
+  bucket        = local.bucket_name #globally unique name
+  tags          = var.common_tags
   versioning    = var.lambda_bucket["versioning"]
   logging       = {}
   server_side_encryption_configuration = {

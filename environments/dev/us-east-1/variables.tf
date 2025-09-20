@@ -1,5 +1,5 @@
 
-variable "common_vars" {
+variable "common_tags" {
   type = any
 }
 variable "lambda_function" {
