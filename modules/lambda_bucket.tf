@@ -1,5 +1,5 @@
 locals {
-  bucket_name = "${var.common_tags.Environment}-${var.common_tags.region}-lambda-bucket-new2"
+  bucket_name = "${var.common_tags["Environment"]}-${var.common_tags["region"]}-lambda-bucket-new2"
 }
 
 resource "aws_s3_bucket_policy" "lambda_bucket_policy" {
