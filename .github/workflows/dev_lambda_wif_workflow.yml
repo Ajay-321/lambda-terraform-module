@@ -36,7 +36,7 @@ jobs:
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
-          role-to-assume: ${{ secrets.ASSUME_ROLE_ARN }}
+          role-to-assume: ${{ secrets.ASSUME_ROLE_ARN }} 
           aws-region: us-east-1    
 
       # Clean old zips
