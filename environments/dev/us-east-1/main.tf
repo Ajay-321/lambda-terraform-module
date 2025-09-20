@@ -1,4 +1,4 @@
-##dev module for testing
+##dev module
 module "dev" {
   source            = "../../../modules"
   lambda_function   = var.lambda_function

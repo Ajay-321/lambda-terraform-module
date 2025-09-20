@@ -10,7 +10,7 @@ terraform {
 provider "aws" {
   region = "us-east-1"
   assume_role {
-    role_arn = "arn:aws:iam::214408080534:role/ec2-ssm-role" #runner iam role 
+    role_arn = "arn:aws:iam::<account id>:role/<runner-role-name>" #runner iam role 
   }
 }
 

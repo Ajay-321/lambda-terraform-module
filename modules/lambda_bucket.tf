@@ -1,5 +1,5 @@
 locals {
-  bucket_name = "${var.common_tags["Environment"]}-${var.common_tags["region"]}-lambda-bucket-new2"
+  bucket_name = "${var.common_tags["Environment"]}-${var.common_tags["region"]}-lambda-bucket" #globally unique name
 }
 
 resource "aws_s3_bucket_policy" "lambda_bucket_policy" {
@@ -11,7 +11,7 @@ resource "aws_s3_bucket_policy" "lambda_bucket_policy" {
 module "lambda_bucket" {
   source        = "github.com/terraform-aws-modules/terraform-aws-s3-bucket.git?ref=v5.5.0"
   create_bucket = var.lambda_bucket["create"]
-  bucket        = local.bucket_name #globally unique name
+  bucket        = local.bucket_name
   tags          = var.common_tags
   versioning    = var.lambda_bucket["versioning"]
   logging       = {}
