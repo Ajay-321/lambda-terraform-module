@@ -2,7 +2,7 @@
 common_tags = {
   created_with_terraform = "yes"
   Environment            = "dev"
-  region          = "us-east-1"
+  region                 = "us-east-1"
 }
 
 lambda_function = {
