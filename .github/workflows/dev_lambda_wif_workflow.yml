@@ -28,7 +28,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      # Python setup for runner
+      # Python setup for githun runner
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
