@@ -1,28 +1,29 @@
 common_vars = {
-  vpc_id                = "your vpc id"
-  vpc_security_group_id = ["security group id with outbound access to internet"]
-  region                = "your region name"
+  vpc_id                = "vpc-0df88a8112a62efd8"
+  vpc_security_group_id = ["sg-06cb4082bec56dd09"]
+  region                = "us-east-1"
   common_tags = {
+    Terraform   = "true"
     Environment = "dev"
-    aws_region  = "your region name"
+    aws_region  = "us-east-1"
   }
-  subnet_ids = ["private_subnet_az1", "private_subnet_az2"]
+  subnet_ids = ["subnet-0f6c5cb3a64fe6a50", "subnet-0a1810a35106e97b7"]
 }
 
 lambda_function = {
   dev = {
     create        = true
-    iam_role_name = "dev-lambda-function-role" # your lambda iam role with AWSLambdaBasicExecutionRole & AWSLambdaENIManagementAccess access
-    function_name = "dev-us-east-1-wif-lambda" # your lambda name
-    description   = "Dev WIF Lambda function." # lambda description
+    iam_role_name = "dev-lambda-function-role"
+    function_name = "dev-us-east-1-wif-lambda"
+    description   = "Dev Lambda function."
     handler       = "lambda_function.lambda_handler"
     runtime       = "python3.12"
     memory_size   = 256
     timeout       = 900
     lambda_config = {
-      credential_file_path = "workload_identity_config.json" #wif credentials file path
-      google_cloud_project = "" # gcp project name
-      gcs_bucket_name      = "" #gcs bucket name
+      credential_file_path = "workload_identity_config.json"
+      google_cloud_project = "dev-wif-demo-project"
+      gcs_bucket_name      = "dev-wif-demo-bucket"
 
     }
   }
@@ -41,11 +42,11 @@ lambda_bucket = {
         Sid    = "AllowRootAccess"
         Effect = "Allow"
         Principal = {
-          AWS = "arn:aws:iam::<account id>:root"
+          AWS = "arn:aws:iam::214408080534:root"
         }
         Action = "s3:*"
         Resource = [
-          "arn:aws:s3:::<lambda bucket name>"
+          "arn:aws:s3:::dev-us-east-1-lambda-bucket-new2"
         ]
       }
     ]
@@ -53,9 +54,9 @@ lambda_bucket = {
 }
 
 sns_topic = {
-  name        = "dev-us-east-1-snstopic" # your sns topic name
+  name        = "dev-us-east-1-snstopic"
   description = "Notifications for Lambda function Failure"
-  emails      = ["email id"]
+  emails      = ["ajay10795@gmail.com"]
 }
 
 event_bridge = {
@@ -72,5 +73,5 @@ event_bridge = {
 }
 
 #lambda layer variables
-layer_name        = " layer name"
-layer_bucket_name = "layer bucket name" 
+layer_name        = "gcp-wif-layer-new"
+layer_bucket_name = "dev-test-bucket-43" 

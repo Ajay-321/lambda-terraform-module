@@ -19,9 +19,6 @@ resource "aws_lambda_layer_version" "common_layer" {
   s3_key              = "lambda/lambda_layer/layer.zip"
   compatible_runtimes = ["python3.12"]
 
-  # Force update when the uploaded object changes
-  #source_code_hash = aws_s3_object.lambda_layer_zip.etag
-
   depends_on = [aws_s3_object.lambda_layer_zip]
 }
 

@@ -9,7 +9,7 @@ on:
   push:
     paths:
       - '.github/workflows/dev_lambda_wif_workflow.yml'
-      - 'dev/us-east-1/**'
+      - 'environments/dev/us-east-1/**'
       - 'modules/**'
       - 'lambda/**'
 

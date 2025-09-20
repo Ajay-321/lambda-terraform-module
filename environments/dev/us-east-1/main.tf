@@ -1,6 +1,6 @@
 ##dev module for testing
 module "dev" {
-  source            = "../../modules"
+  source            = "../../../modules"
   lambda_function   = var.lambda_function
   lambda_bucket     = var.lambda_bucket
   common_vars       = var.common_vars
