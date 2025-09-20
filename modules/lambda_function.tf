@@ -38,7 +38,7 @@ module "lambda_function" {
   memory_size            = each.value.memory_size
   timeout                = each.value.timeout
   vpc_subnet_ids         = each.value.subnet_ids
-  vpc_security_group_ids = each.values.vpc_security_group_id
+  vpc_security_group_ids = each.value.vpc_security_group_id
 
   # Attach the common layer dynamically 
   layers = [aws_lambda_layer_version.common_layer.arn]
