@@ -7,12 +7,6 @@ variable "lambda_bucket" {
 variable "lambda_function" {
   type = any
 }
-variable "sns_topic" {
-  type = any
-}
-variable "event_bridge" {
-  type = any
-}
 variable "layer_name" {
   type = string
 }
